@@ -21,21 +21,21 @@ public class QProductRepositoryTest {
     public void queryDSLTest1() {
 
         Product product1 = new Product();
-        product1.setName("Ææ");
+        product1.setName("íŽœ");
         product1.setPrice(1000);
         product1.setStock(100);
         product1.setCreatedAt(LocalDateTime.now());
         product1.setUpdateAt(LocalDateTime.now());
 
         Product product2 = new Product();
-        product2.setName("Ææ");
+        product1.setName("íŽœ");
         product2.setPrice(5000);
         product2.setStock(350);
         product2.setCreatedAt(LocalDateTime.now());
         product2.setUpdateAt(LocalDateTime.now());
 
         Product product3 = new Product();
-        product3.setName("Ææ");
+        product1.setName("íŽœ");
         product3.setPrice(10000);
         product3.setStock(150);
         product3.setCreatedAt(LocalDateTime.now());
@@ -46,13 +46,56 @@ public class QProductRepositoryTest {
         Product savedProduct2 = qProductRepository.save(product2);
         Product savedProduct3 = qProductRepository.save(product3);
 
-        Predicate predicate = QProduct.product.name.containsIgnoreCase("Ææ")
+        Predicate predicate = QProduct.product.name.containsIgnoreCase("íŽœ")
                 .and(QProduct.product.price.between(1000,2500));
 
         Optional<Product> foundProduct = qProductRepository.findOne(predicate);
 
         if(foundProduct.isPresent()) {
             Product product = foundProduct.get();
+            System.out.println(product.getNumber());
+            System.out.println(product.getName());
+            System.out.println(product.getPrice());
+            System.out.println(product.getStock());
+        }
+    }
+
+    @Test
+    public void queryDSLTest2() {
+        Product product1 = new Product();
+        product1.setName("ï¿½ï¿½");
+        product1.setPrice(1000);
+        product1.setStock(100);
+        product1.setCreatedAt(LocalDateTime.now());
+        product1.setUpdateAt(LocalDateTime.now());
+
+        Product product2 = new Product();
+        product2.setName("ï¿½ï¿½");
+        product2.setPrice(5000);
+        product2.setStock(350);
+        product2.setCreatedAt(LocalDateTime.now());
+        product2.setUpdateAt(LocalDateTime.now());
+
+        Product product3 = new Product();
+        product3.setName("ï¿½ï¿½");
+        product3.setPrice(10000);
+        product3.setStock(150);
+        product3.setCreatedAt(LocalDateTime.now());
+        product3.setUpdateAt(LocalDateTime.now());
+
+
+        Product savedProduct1 = qProductRepository.save(product1);
+        Product savedProduct2 = qProductRepository.save(product2);
+        Product savedProduct3 = qProductRepository.save(product3);
+
+        QProduct qProduct = QProduct.product;
+
+        Iterable<Product> productList = qProductRepository.findAll(
+                qProduct.name.contains("ï¿½ï¿½")
+                        .and(qProduct.price.between(1000,10000))
+        );
+
+        for(Product product : productList) {
             System.out.println(product.getNumber());
             System.out.println(product.getName());
             System.out.println(product.getPrice());
